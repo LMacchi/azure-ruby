@@ -38,27 +38,37 @@ $ ruby get_blob_file.rb $token testbucket "default/test_file.txt"
 AAAAAAAAAAAAAAA
 ```
 
-### Encrypt with vault key
+### Encrypt with AKMS key
 
 ```
 ruby vault_encrypt.rb $token "https://testvault.vault.azure.net/keys/test-key/12345" "RSA1_5" "meow"
 <encrypted string>
 ```
 
-### Decrypt with vault key
+### Decrypt with AKMS key
 
 ```
 ruby vault_decrypt.rb $token "https://testvault.vault.azure.net/keys/test-key/12345" "RSA1_5" $encrypted_string
 meow
 ```
 
-### Encrypt/Decrypt with AKMS
+### Encrypt/Decrypt with AKMS key (fancier)
 
 ```
 # Encrypt
-enc=$(./test.rb -o encrypt -s meow -k $key_url)
+enc=$(ruby vault_encrypt_decrypt.rb -o encrypt -s meow -k $key_url)
 
 # Decrypt
-./test.rb -o decrypt -s $enc -k $key_url
+ruby vault_encrypt_decrypt.rb -o decrypt -s $enc -k $key_url
 meow
+```
+
+### Retrieve a key from Azure App Configuration
+
+```
+ruby app_config_get_kv_value.rb $key $app
+{
+  "foo": "bar",
+  "cat": "meow",
+}
 ```
